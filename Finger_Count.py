@@ -1,28 +1,8 @@
-
-# coding: utf-8
-
-# <a href="https://www.pieriandata.com"><img src="../DATA/Logo.jpg"></a>
-
-# # Capstone Project
-# 
-# ## Finger Detection and Counting
-
-# ## Imports
-
-# In[1]:
-
 import cv2
 import numpy as np
 
 # Used for distance calculation later on
 from sklearn.metrics import pairwise
-
-
-# ### Global Variables
-# 
-# We will use these as we go along.
-
-# In[2]:
 
 # This background will be a global variable that we update through a few functions
 background = None
@@ -44,8 +24,6 @@ roi_left = 600
 # 
 # The function calculates the weighted sum of the input image src and the accumulator dst so that dst becomes a running average of a frame sequence:
 
-# In[3]:
-
 def calc_accum_avg(frame, accumulated_weight):
     '''
     Given a frame and a previous accumulated weight, computed the weighted average of the image passed in.
@@ -62,10 +40,7 @@ def calc_accum_avg(frame, accumulated_weight):
     # compute weighted average, accumulate it and update the background
     cv2.accumulateWeighted(frame, background, accumulated_weight)
 
-
 # ## Segment the Hand Region in Frame
-
-# In[4]:
 
 def segment(frame, threshold=25):
     global background
@@ -96,12 +71,6 @@ def segment(frame, threshold=25):
 # ## Counting Fingers with a Convex Hull
 # 
 # We just calculated the external contour of the hand. Now using that segmented hand, let's see how to calculate fingers. Then we can count how many are up!
-# 
-# Example of ConvexHulls:
-# 
-# <img src="hand_convex.png">
-
-# In[5]:
 
 def count_fingers(thresholded, hand_segment):
     
@@ -177,8 +146,6 @@ def count_fingers(thresholded, hand_segment):
 
 # ## Run Program
 
-# In[1]:
-
 cam = cv2.VideoCapture(0)
 
 # Intialize a frame count
@@ -253,14 +220,3 @@ while True:
 # Release the camera and destroy all the windows
 cam.release()
 cv2.destroyAllWindows()
-
-
-# In[ ]:
-
-
-
-
-# In[ ]:
-
-
-
