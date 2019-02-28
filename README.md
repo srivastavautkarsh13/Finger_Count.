@@ -1,2 +1,1 @@
-Object Recognition.
-Counting Fingers usng Open_CV.
+Counting Fingers using Open_CV.
