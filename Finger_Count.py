@@ -12,17 +12,13 @@ accumulated_weight = 0.5
 
 
 # Manually set up our ROI for grabbing the hand.
-# Feel free to change these. I just chose the top right corner for filming.
+
 roi_top = 20
 roi_bottom = 300
 roi_right = 300
 roi_left = 600
 
-
-
 # ## Finding Average Background Value
-# 
-# The function calculates the weighted sum of the input image src and the accumulator dst so that dst becomes a running average of a frame sequence:
 
 def calc_accum_avg(frame, accumulated_weight):
     '''
@@ -49,11 +45,11 @@ def segment(frame, threshold=25):
     diff = cv2.absdiff(background.astype("uint8"), frame)
 
     # Apply a threshold to the image so we can grab the foreground
-    # We only need the threshold, so we will throw away the first item in the tuple with an underscore _
+    
     _ , thresholded = cv2.threshold(diff, threshold, 255, cv2.THRESH_BINARY)
 
     # Grab the external contours form the image
-    # Again, only grabbing what we need here and throwing away the rest
+    
     image, contours, hierarchy = cv2.findContours(thresholded.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # If length of contours list is 0, then we didn't grab any contours!
@@ -69,8 +65,6 @@ def segment(frame, threshold=25):
 
 
 # ## Counting Fingers with a Convex Hull
-# 
-# We just calculated the external contour of the hand. Now using that segmented hand, let's see how to calculate fingers. Then we can count how many are up!
 
 def count_fingers(thresholded, hand_segment):
     
@@ -79,9 +73,7 @@ def count_fingers(thresholded, hand_segment):
     conv_hull = cv2.convexHull(hand_segment)
     
     # Now the convex hull will have at least 4 most outward points, on the top, bottom, left, and right.
-    # Let's grab those points by using argmin and argmax. Keep in mind, this would require reading the documentation
-    # And understanding the general array shape returned by the conv hull.
-
+    
     # Find the top, bottom, left , and right.
     # Then make sure they are in tuple format
     top    = tuple(conv_hull[conv_hull[:, :, 1].argmin()][0])
@@ -89,7 +81,6 @@ def count_fingers(thresholded, hand_segment):
     left   = tuple(conv_hull[conv_hull[:, :, 0].argmin()][0])
     right  = tuple(conv_hull[conv_hull[:, :, 0].argmax()][0])
 
-    # In theory, the center of the hand is half way between the top and bottom and halfway between left and right
     cX = (left[0] + right[0]) // 2
     cY = (top[1] + bottom[1]) // 2
 
